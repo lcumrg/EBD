@@ -1,0 +1,45 @@
+name: sync-roadmap-notion
+
+# Schedula uno snapshot ogni 15 minuti e permette anche di forzare manualmente
+# l'esecuzione dal tab "Actions" del repo.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # serve per committare data.json
+
+concurrency:
+  group: sync-roadmap
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run sync
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python scripts/sync_notion.py
+
+      - name: Commit & push se cambiato
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain data.json)" ]]; then
+            git add data.json
+            git commit -m "snapshot: $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          else
+            echo "Nessun cambiamento — niente da committare."
+          fi
