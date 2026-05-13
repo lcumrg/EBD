@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ebdomadario — roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Palette ereditata da index.html — variante light */
+    --bg: #FAF7F0;
+    --bg-card: #FFFFFF;
+    --bg-soft: #F4EFE3;
+    --fg: #1A1A1A;
+    --fg-soft: #2E2A23;
+    --muted: #5C5C5C;
+    --muted-light: #888888;
+    --border: #E1DCC9;
+    --border-strong: #C7BFA8;
+    --rule: #D8D8D8;
+    --accent-ia: #1F3A66;        /* blu lapislazzuli — in lavorazione */
+    --accent-human: #B85C2E;     /* rosso minio — alta priorità */
+    --accent-cda: #3D6651;       /* verde ramato — completato */
+    --accent-coord: #6E5A3E;     /* terra di siena — categoria */
+    --accent-mem: #6E4F8A;       /* viola libresco */
+
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14110C;
+      --bg-card: #1B1813;
+      --bg-soft: #221E17;
+      --fg: #ECE6D7;
+      --fg-soft: #D6CFBF;
+      --muted: #9A938A;
+      --muted-light: #6F6A60;
+      --border: #2D2922;
+      --border-strong: #4A4438;
+      --rule: #2D2922;
+      --accent-ia: #7BA3D4;
+      --accent-human: #E08355;
+      --accent-cda: #87BFA1;
+      --accent-coord: #C0A077;
+      --accent-mem: #B89BD4;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.55;
+    font-feature-settings: "zero", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    padding: clamp(1rem, 3vw, 2rem);
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ============================== HEADER ============================== */
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .head__title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--fg);
+  }
+  .head__title .sep { color: var(--accent-coord); margin: 0 0.25rem; }
+
+  .head__meta {
+    display: flex;
+    gap: 1.25rem;
+    align-items: baseline;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .counter strong {
+    color: var(--accent-ia);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .counter .alta {
+    color: var(--accent-human);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .refresh-btn {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--fg);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .refresh-btn:hover { background: var(--bg-soft); border-color: var(--accent-human); color: var(--accent-human); }
+  .refresh-btn:disabled { opacity: 0.4; cursor: wait; }
+
+  /* ============================== LOADING / ERROR ============================== */
+  .loading {
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--muted);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .error-box {
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-human);
+    font-size: 0.85rem;
+  }
+  .error-box h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--accent-human);
+  }
+  .error-box p { color: var(--fg-soft); margin-bottom: 0.5rem; }
+  .error-box ul { padding-left: 1.5rem; margin-top: 0.4rem; color: var(--muted); }
+  .error-box li { margin-bottom: 0.3rem; }
+  .error-box code {
+    background: var(--bg-soft);
+    padding: 0.05rem 0.35rem;
+    color: var(--accent-coord);
+    font-size: 0.95em;
+  }
+
+  /* ============================== GRID OF ROOMS ============================== */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 720px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  }
+  @media (min-width: 1200px) {
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  }
+
+  /* ============================== ROOM (Categoria) ============================== */
+  .room {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .room__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.45rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .room__title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent-coord);
+    letter-spacing: 0.02em;
+    flex: 1;
+    min-width: 0;
+  }
+  .room__desc {
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 0.4rem;
+  }
+
+  .room__count {
+    font-size: 0.74rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .room__count.all-done { color: var(--accent-cda); }
+
+  .room__list { display: flex; flex-direction: column; }
+
+  .room__empty {
+    font-size: 0.78rem;
+    color: var(--muted-light);
+    font-style: italic;
+    padding: 0.4rem 0;
+  }
+
+  /* ============================== TASK ROW ============================== */
+  .task {
+    display: grid;
+    grid-template-columns: 1.4rem 2.8rem 1fr 1rem;
+    gap: 0.45rem;
+    align-items: baseline;
+    padding: 0.22rem 0.15rem;
+    cursor: pointer;
+    transition: background 0.1s;
+    outline: none;
+  }
+
+  .task:hover { background: var(--bg-soft); }
+  .task:focus-visible {
+    background: var(--bg-soft);
+    outline: 1px solid var(--accent-human);
+    outline-offset: -1px;
+  }
+
+  .task[aria-selected="true"] {
+    background: var(--bg-soft);
+  }
+  .task[aria-selected="true"] .task__codice { color: var(--accent-human); }
+
+  .task__state {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .task[data-stato="completato"] .task__state     { color: var(--accent-cda); }
+  .task[data-stato="in lavorazione"] .task__state { color: var(--accent-ia); font-weight: 600; }
+  .task[data-stato="sospeso"] .task__state        { color: var(--muted-light); }
+
+  .task__codice {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--fg-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .task__name {
+    font-size: 0.82rem;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .task[data-stato="completato"] .task__name {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--muted-light);
+    text-decoration-thickness: 1px;
+  }
+  .task[data-stato="sospeso"] .task__name { color: var(--muted-light); }
+
+  .task__priority {
+    font-size: 0.82rem;
+    color: var(--muted-light);
+    text-align: center;
+  }
+  .task[data-priorita="alta"]  .task__priority { color: var(--accent-human); }
+  .task[data-priorita="media"] .task__priority { color: var(--accent-coord); }
+  .task[data-priorita="bassa"] .task__priority { color: var(--muted-light); }
+
+  /* ============================== DETAIL ============================== */
+  .detail {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent-coord);
+    padding: 1.1rem 1.25rem 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: opacity 0.15s;
+  }
+  .detail.fading { opacity: 0.3; }
+
+  .detail--empty {
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-top: 1px dashed var(--border);
+    color: var(--muted-light);
+    text-align: center;
+    padding: 1rem;
+    font-style: italic;
+    font-size: 0.82rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail__head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed var(--border);
+    flex-wrap: wrap;
+  }
+  .detail__codice {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent-human);
+    font-variant-numeric: tabular-nums;
+  }
+  .detail__nome {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .detail__categoria {
+    font-size: 0.74rem;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: 0.05em;
+  }
+
+  .detail__meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem 1rem;
+    font-size: 0.84rem;
+    margin-bottom: 0.6rem;
+  }
+  @media (min-width: 600px) {
+    .detail__meta {
+      grid-template-columns: 6rem 1fr 6rem 1fr;
+      align-items: baseline;
+    }
+  }
+  .detail__label {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+  .detail__value {
+    color: var(--fg);
+  }
+  .detail__value--stato { font-weight: 600; }
+  .detail__value--stato[data-stato="in lavorazione"] { color: var(--accent-ia); }
+  .detail__value--stato[data-stato="completato"]     { color: var(--accent-cda); }
+  .detail__value--stato[data-stato="sospeso"]        { color: var(--muted-light); }
+  .detail__value--priorita[data-priorita="alta"]  { color: var(--accent-human); font-weight: 600; }
+  .detail__value--priorita[data-priorita="media"] { color: var(--accent-coord); }
+  .detail__value--priorita[data-priorita="bassa"] { color: var(--muted-light); }
+
+  .detail__note-wrap {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--border);
+  }
+  .detail__note-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+  }
+  .detail__note {
+    background: var(--bg-soft);
+    border-left: 2px solid var(--accent-coord);
+    padding: 0.55rem 0.8rem;
+    font-size: 0.84rem;
+    color: var(--fg-soft);
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  /* ============================== FOOTER ============================== */
+  .foot {
+    border-top: 1px solid var(--border);
+    padding-top: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  .foot a {
+    color: var(--accent-coord);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--border-strong);
+  }
+  .foot a:hover {
+    color: var(--accent-human);
+    border-bottom-color: var(--accent-human);
+  }
+
+  /* ============================== LEGEND ============================== */
+  .legend {
+    margin: 0 0 1.5rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    font-size: 0.74rem;
+    color: var(--muted);
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .legend__group { display: inline-flex; gap: 0.6rem; align-items: baseline; flex-wrap: wrap; }
+  .legend__item { display: inline-flex; gap: 0.3rem; align-items: baseline; }
+  .legend__sym {
+    font-weight: 600;
+    color: var(--fg-soft);
+  }
+  .legend__sym--done    { color: var(--accent-cda); }
+  .legend__sym--working { color: var(--accent-ia); }
+  .legend__sym--paused  { color: var(--muted-light); }
+  .legend__sym--alta    { color: var(--accent-human); }
+  .legend__sym--media   { color: var(--accent-coord); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="head__title">
+      ebdomadario <span class="sep">·</span> roadmap
+    </div>
+    <div class="head__meta">
+      <span id="counter" class="counter">—</span>
+      <button id="refresh" class="refresh-btn" type="button">aggiorna</button>
+    </div>
+  </header>
+
+  <div class="legend" aria-label="legenda dei simboli">
+    <span class="legend__group">
+      <span class="legend__item"><span class="legend__sym legend__sym--done">[✓]</span> completato</span>
+      <span class="legend__item"><span class="legend__sym legend__sym--working">[~]</span> in lavorazione</span>
+      <span class="legend__item"><span class="legend__sym">[ ]</span> da iniziare</span>
+      <span class="legend__item"><span class="legend__sym legend__sym--paused">[-]</span> sospeso</span>
+    </span>
+    <span class="legend__group">
+      <span class="legend__item"><span class="legend__sym legend__sym--alta">●</span> alta</span>
+      <span class="legend__item"><span class="legend__sym legend__sym--media">◐</span> media</span>
+      <span class="legend__item"><span class="legend__sym">○</span> bassa</span>
+    </span>
+  </div>
+
+  <div id="grid-container">
+    <div class="loading">caricamento dei dati…</div>
+  </div>
+
+  <div id="detail-container">
+    <div class="detail--empty">— seleziona una voce per vedere il dettaglio —</div>
+  </div>
+
+  <footer class="foot">
+    <span id="last-updated">—</span>
+    <span><a href="index.html">↩ vetrina del progetto</a></span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // ============================
+  // CONFIGURAZIONE
+  // ============================
+  // Path del JSON prodotto dallo script di sync (sync_notion.py)
+  // committato dal workflow GitHub Actions e servito da GitHub Pages.
+  const DATA_URL = './data.json';
+
+  // Categorie: ordine di visualizzazione e descrizioni leggibili.
+  // Le chiavi corrispondono ESATTAMENTE alle option del campo "Categoria" del database Notion.
+  const CATEGORIE = [
+    { key: 'Blocco A',          desc: 'operazionalizzazione criteri e prompt 1.0' },
+    { key: 'Blocco B',          desc: 'corpus per i dossier' },
+    { key: 'Blocco C',          desc: 'blocker tecnici di progettazione' },
+    { key: 'Blocco D',          desc: 'privacy policy e GDPR' },
+    { key: 'Blocco E',          desc: 'test pre-prototipo' },
+    { key: 'Blocco F',          desc: '(da definire)' },
+    { key: 'Fase sviluppo',     desc: '10 fasi della factory · post claude code' },
+    { key: 'TEST',              desc: 'validazioni pre-prototipo' },
+    { key: 'Asset trasversale', desc: 'documenti e configurazioni' }
+  ];
+
+  // ============================
+  // MAPPING SIMBOLI
+  // ============================
+  const STATE_SYMBOLS = {
+    'completato':     '[\u2713]',
+    'in lavorazione': '[~]',
+    'da iniziare':    '[ ]',
+    'sospeso':        '[-]'
+  };
+
+  const PRIORITY_SYMBOLS = {
+    'alta':  '\u25CF',
+    'media': '\u25D0',
+    'bassa': '\u25CB'
+  };
+
+  // ============================
+  // HELPERS
+  // ============================
+  const $  = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+  function el(tag, opts, children) {
+    opts = opts || {};
+    const e = document.createElement(tag);
+    if (opts.class) e.className = opts.class;
+    if (opts.text != null) e.textContent = opts.text;
+    if (opts.html != null) e.innerHTML = opts.html;
+    if (opts.attrs) Object.keys(opts.attrs).forEach(k => e.setAttribute(k, opts.attrs[k]));
+    if (opts.data) Object.keys(opts.data).forEach(k => e.dataset[k] = opts.data[k]);
+    if (children) children.forEach(c => {
+      if (typeof c === 'string') e.appendChild(document.createTextNode(c));
+      else if (c) e.appendChild(c);
+    });
+    return e;
+  }
+
+  function escapeHTML(s) {
+    return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  // sort naturale: A2 < A10
+  function naturalCompare(a, b) {
+    const re = /(\d+)|(\D+)/g;
+    const ax = String(a || '').match(re) || [];
+    const bx = String(b || '').match(re) || [];
+    for (let i = 0; i < Math.min(ax.length, bx.length); i++) {
+      const an = parseInt(ax[i], 10);
+      const bn = parseInt(bx[i], 10);
+      if (!isNaN(an) && !isNaN(bn)) { if (an !== bn) return an - bn; }
+      else { if (ax[i] !== bx[i]) return ax[i] < bx[i] ? -1 : 1; }
+    }
+    return ax.length - bx.length;
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '—';
+    try {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      const pad = n => String(n).padStart(2, '0');
+      return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())
+           + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    } catch (e) {
+      return iso;
+    }
+  }
+
+  // ============================
+  // STATE
+  // ============================
+  let allItems = [];
+  let selectedId = null;
+  let snapshotAt = null;
+
+  // ============================
+  // RENDER: counter in header
+  // ============================
+  function renderCounter(items) {
+    const inLav = items.filter(i => i.stato === 'in lavorazione').length;
+    const altaAperta = items.filter(i =>
+      i.priorita === 'alta' && (i.stato === 'in lavorazione' || i.stato === 'da iniziare')
+    ).length;
+    const cnt = $('#counter');
+    cnt.innerHTML = '';
+    cnt.appendChild(el('strong', { text: String(inLav) }));
+    cnt.appendChild(document.createTextNode(' in lavorazione · '));
+    const alta = el('span', { class: 'alta', text: String(altaAperta) });
+    cnt.appendChild(alta);
+    cnt.appendChild(document.createTextNode(' alta priorità'));
+  }
+
+  // ============================
+  // RENDER: griglia di stanze
+  // ============================
+  function renderGrid(items) {
+    const container = $('#grid-container');
+    container.innerHTML = '';
+
+    const grid = el('div', { class: 'grid' });
+
+    // raggruppo per categoria
+    const byCat = {};
+    items.forEach(it => {
+      const cat = it.categoria || 'altro';
+      if (!byCat[cat]) byCat[cat] = [];
+      byCat[cat].push(it);
+    });
+
+    // rendero ogni stanza secondo l'ordine definito
+    CATEGORIE.forEach(catDef => {
+      const tasks = (byCat[catDef.key] || []).slice().sort((a, b) => naturalCompare(a.codice, b.codice));
+      grid.appendChild(renderRoom(catDef, tasks));
+    });
+
+    // categorie inattese (presenti in Notion ma non nella mappa)
+    const knownKeys = CATEGORIE.map(c => c.key);
+    Object.keys(byCat).forEach(k => {
+      if (knownKeys.indexOf(k) === -1 && byCat[k].length > 0) {
+        const tasks = byCat[k].slice().sort((a, b) => naturalCompare(a.codice, b.codice));
+        grid.appendChild(renderRoom({ key: k, desc: '(categoria non riconosciuta)' }, tasks));
+      }
+    });
+
+    container.appendChild(grid);
+  }
+
+  function renderRoom(catDef, tasks) {
+    const room = el('div', { class: 'room' });
+
+    const head = el('div', { class: 'room__head' });
+    const title = el('div', { class: 'room__title' });
+    title.appendChild(document.createTextNode(catDef.key.toLowerCase()));
+    if (catDef.desc) {
+      title.appendChild(el('span', { class: 'room__desc', text: '· ' + catDef.desc }));
+    }
+    head.appendChild(title);
+
+    const completed = tasks.filter(t => t.stato === 'completato').length;
+    const total = tasks.length;
+    const cnt = el('div', {
+      class: 'room__count' + (total > 0 && completed === total ? ' all-done' : ''),
+      text: completed + '/' + total
+    });
+    head.appendChild(cnt);
+
+    room.appendChild(head);
+
+    const list = el('div', { class: 'room__list' });
+    if (tasks.length === 0) {
+      list.appendChild(el('div', { class: 'room__empty', text: '— nessuna voce —' }));
+    } else {
+      tasks.forEach(t => list.appendChild(renderTask(t)));
+    }
+    room.appendChild(list);
+
+    return room;
+  }
+
+  function renderTask(t) {
+    const stato = t.stato || 'da iniziare';
+    const priorita = t.priorita || null;
+    const id = t.id || (t.codice + '|' + (t.categoria || ''));
+
+    const row = el('div', {
+      class: 'task',
+      attrs: { role: 'button', tabindex: '0', 'aria-selected': selectedId === id ? 'true' : 'false' },
+      data: { stato: stato, priorita: priorita || '', id: id }
+    });
+
+    row.appendChild(el('div', { class: 'task__state', text: STATE_SYMBOLS[stato] || '[ ]' }));
+    row.appendChild(el('div', { class: 'task__codice', text: t.codice || '—' }));
+    row.appendChild(el('div', {
+      class: 'task__name',
+      text: t.nome || '(senza nome)',
+      attrs: { title: t.nome || '' }
+    }));
+    row.appendChild(el('div', {
+      class: 'task__priority',
+      text: priorita ? (PRIORITY_SYMBOLS[priorita] || '') : ''
+    }));
+
+    row.addEventListener('click', () => selectTask(t, id));
+    row.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTask(t, id); }
+    });
+
+    return row;
+  }
+
+  function selectTask(t, id) {
+    selectedId = id;
+    $$('.task').forEach(row => {
+      row.setAttribute('aria-selected', row.dataset.id === id ? 'true' : 'false');
+    });
+    renderDetail(t);
+  }
+
+  // ============================
+  // RENDER: pannello dettaglio
+  // ============================
+  function renderDetail(t) {
+    const container = $('#detail-container');
+    container.innerHTML = '';
+
+    const det = el('div', { class: 'detail fading' });
+
+    // head
+    const head = el('div', { class: 'detail__head' });
+    head.appendChild(el('span', { class: 'detail__codice', text: t.codice || '—' }));
+    head.appendChild(el('span', { class: 'detail__nome', text: t.nome || '(senza nome)' }));
+    if (t.categoria) {
+      head.appendChild(el('span', { class: 'detail__categoria', text: t.categoria.toLowerCase() }));
+    }
+    det.appendChild(head);
+
+    // meta
+    const meta = el('div', { class: 'detail__meta' });
+
+    meta.appendChild(el('div', { class: 'detail__label', text: 'stato' }));
+    const statoVal = el('div', {
+      class: 'detail__value detail__value--stato',
+      text: t.stato || '—',
+      data: { stato: t.stato || '' }
+    });
+    meta.appendChild(statoVal);
+
+    meta.appendChild(el('div', { class: 'detail__label', text: 'priorità' }));
+    const priVal = el('div', {
+      class: 'detail__value detail__value--priorita',
+      text: t.priorita || '—',
+      data: { priorita: t.priorita || '' }
+    });
+    meta.appendChild(priVal);
+
+    meta.appendChild(el('div', { class: 'detail__label', text: 'decisioni' }));
+    meta.appendChild(el('div', { class: 'detail__value', text: t.decisioni || '—' }));
+
+    meta.appendChild(el('div', { class: 'detail__label', text: 'aggiornato' }));
+    meta.appendChild(el('div', { class: 'detail__value', text: formatDate(t.aggiornato_il) }));
+
+    det.appendChild(meta);
+
+    // note
+    if (t.note && String(t.note).trim()) {
+      const noteWrap = el('div', { class: 'detail__note-wrap' });
+      noteWrap.appendChild(el('div', { class: 'detail__note-label', text: 'note' }));
+      noteWrap.appendChild(el('div', { class: 'detail__note', text: t.note }));
+      det.appendChild(noteWrap);
+    }
+
+    container.appendChild(det);
+
+    // fade-in
+    requestAnimationFrame(() => det.classList.remove('fading'));
+
+    // scroll into view solo su mobile (su desktop il dettaglio è già visibile sotto la griglia)
+    if (window.matchMedia('(max-width: 720px)').matches) {
+      det.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // ============================
+  // RENDER: footer
+  // ============================
+  function renderFooter(items) {
+    const parts = [];
+    if (snapshotAt) {
+      parts.push('snapshot: ' + formatDate(snapshotAt));
+    } else {
+      const dates = items.map(i => i.aggiornato_il).filter(Boolean).sort();
+      if (dates.length) parts.push('ultima modifica notion: ' + formatDate(dates[dates.length - 1]));
+    }
+    parts.push('aggiornamento automatico ogni ~15 min');
+    $('#last-updated').textContent = parts.join('   ·   ');
+  }
+
+  // ============================
+  // RENDER: error
+  // ============================
+  function renderError(message) {
+    const container = $('#grid-container');
+    container.innerHTML = '';
+    const err = el('div', { class: 'error-box' });
+    err.innerHTML =
+      '<h3>impossibile caricare i dati</h3>' +
+      '<p>' + escapeHTML(message) + '</p>' +
+      '<p>possibili cause:</p>' +
+      '<ul>' +
+        '<li>il file <code>data.json</code> non esiste ancora — il workflow di sync non è stato ancora eseguito.</li>' +
+        '<li>il path è errato — verifica <code>DATA_URL</code> in cima allo script.</li>' +
+        '<li>la build di github pages è in coda — attendi qualche minuto e ricarica.</li>' +
+      '</ul>';
+    container.appendChild(err);
+    $('#counter').textContent = '—';
+    $('#last-updated').textContent = '—';
+    // reset detail
+    const dc = $('#detail-container');
+    dc.innerHTML = '';
+    dc.appendChild(el('div', { class: 'detail--empty', text: '— seleziona una voce per vedere il dettaglio —' }));
+  }
+
+  // ============================
+  // FETCH
+  // ============================
+  async function load() {
+    const btn = $('#refresh');
+    btn.disabled = true;
+    btn.textContent = 'caricamento…';
+    try {
+      const url = DATA_URL + '?t=' + Date.now();
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' — ' + res.statusText);
+      const data = await res.json();
+      allItems = Array.isArray(data.items) ? data.items : [];
+      snapshotAt = data.snapshot_at || null;
+      // mantieni la selezione corrente se ancora presente
+      if (selectedId) {
+        const stillThere = allItems.find(i => (i.id || (i.codice + '|' + (i.categoria || ''))) === selectedId);
+        if (!stillThere) selectedId = null;
+      }
+      renderCounter(allItems);
+      renderGrid(allItems);
+      renderFooter(allItems);
+      // se nessun task selezionato, lascia il placeholder
+      if (!selectedId) {
+        const dc = $('#detail-container');
+        dc.innerHTML = '';
+        dc.appendChild(el('div', { class: 'detail--empty', text: '— seleziona una voce per vedere il dettaglio —' }));
+      }
+    } catch (err) {
+      renderError(err.message || String(err));
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'aggiorna';
+    }
+  }
+
+  $('#refresh').addEventListener('click', load);
+  load();
+})();
+</script>
+
+</body>
+</html>
