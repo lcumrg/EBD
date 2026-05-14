@@ -1,5 +1,5 @@
 {
-  "snapshot_at": "2026-05-14T10:41:28+00:00",
+  "snapshot_at": "2026-05-14T12:17:47+00:00",
   "items": [
     {
       "id": "35e3db3d-0d11-81e0-97f4-ef3f183cb47c",
@@ -449,7 +449,7 @@
       "stato": "da iniziare",
       "priorita": null,
       "decisioni": "D96, D97",
-      "note": "Vincolo: solo dopo T5 positivo. Catalogo PDF, Merchant of Record",
+      "note": "Vincolo: solo dopo T5 positivo. Catalogo PDF, Merchant of Record. — QUESTIONE APERTA (sospesa per D98, emersa in chat il 14 maggio 2026): valutare le piattaforme di creator support (Buy Me a Coffee, Ko-fi, Liberapay) come possibile componente del modello economico. L'elemento di interesse non è la piattaforma ma il frame — sostenere un lavoro editoriale anziché acquistare un prodotto — potenzialmente più coerente con l'impianto del progetto rispetto a un paywall classico o alla vendita di singoli dossier. Da affrontare nella fase economica dedicata, post-prototipo, quando saranno disponibili i dati di costo e ritmo di produzione necessari a scegliere tra donazione libera, abbonamento, tip jar e vendita.",
       "aggiornato_il": "2026-05-12T08:32:00.000Z"
     },
     {
