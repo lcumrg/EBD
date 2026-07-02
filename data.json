@@ -1,5 +1,5 @@
 {
-  "snapshot_at": "2026-07-02T21:41:31+00:00",
+  "snapshot_at": "2026-07-02T22:45:37+00:00",
   "items": [
     {
       "id": "35e3db3d-0d11-81e0-97f4-ef3f183cb47c",
@@ -9,7 +9,7 @@
       "stato": "in lavorazione",
       "priorita": "media",
       "decisioni": "D127",
-      "note": "Nuovo Blocco F della roadmap, istituito nella sessione di coordinamento del 6 maggio 2026 con D127 (biblioteca della voce editoriale come terza categoria di asset trasversali). Stanza di sedimentazione già aperta come chat dedicata. Voce 1 della biblioteca: Javier María Prades López, 'L'intelligenza artificiale ci interroga sul senso dell'esperienza umana', Il Foglio Quotidiano, 6 maggio 2026. Voci future plausibili: Milani, Lodi, De Mauro. Output: manifesto_editoriale_v1_0.md da iniettare nei 7 agenti pertinenti (Stesori analitico/culturale/didattico, Scrittori culturale/didattico, Esploratore chiavi, Contraddittore A). Sotto-passaggi previsti: sedimentazione fonti, mappatura nuclei concettuali, prima stesura, iterazioni, versione 1.0. Deve chiudersi prima dei prompt degli agenti destinatari.",
+      "note": "Blocco F istituito con D127 (biblioteca della voce editoriale, distillata in manifesto da iniettare in 7 agenti). Stanza di sedimentazione attiva. Tre voci depositate: Voce 1 — Prades López (Il Foglio, 6 maggio), voce citazionale; Voce 2 — ITC 'Quo Vadis, Humanitas?', voce di postura (modella lo sguardo, non citabile direttamente); Voce 3 — editoriale di lancio del Foglio AI, benchmark operativo, rilevante per D100 sospesa. Soglia minima di 3-4 fonti per avviare la stesura: raggiunta al minimo — la stesura può partire quando l'autore lo ritiene. Riflessione laterale sul nome ammessa, ora disaccoppiata dalla cadenza (D138 candidata).",
       "aggiornato_il": "2026-05-12T08:59:00.000Z"
     },
     {
@@ -215,10 +215,10 @@
       "codice": "A.1.5",
       "nome": "Selezionatori — Forma output",
       "categoria": "Blocco A",
-      "stato": "da iniziare",
+      "stato": "completato",
       "priorita": null,
       "decisioni": "",
-      "note": "",
+      "note": "Chiuso il 9 maggio 2026 (chat EBD - Blocco A). JSON come fonte di verità + markdown derivato per la lettura autoriale in Fase 3. Schema campi della candidata definito: id, titolo_candidata, riassunto, tipo A/B, fonti_articoli, quattro voti separati, quattro motivazioni, metadati_esecuzione.",
       "aggiornato_il": "2026-05-12T08:32:00.000Z"
     },
     {
@@ -413,10 +413,10 @@
       "codice": "A.1.6",
       "nome": "Selezionatori — Identicità Claude/Gemini",
       "categoria": "Blocco A",
-      "stato": "da iniziare",
+      "stato": "completato",
       "priorita": null,
       "decisioni": "",
-      "note": "",
+      "note": "Chiuso il 9 maggio 2026. Prompt unico identico per Claude e Gemini (nessuna differenziazione), per manutenibilità e fedeltà al parallelo cieco (D83).",
       "aggiornato_il": "2026-05-12T08:32:00.000Z"
     },
     {
@@ -635,8 +635,8 @@
       "categoria": "Blocco B",
       "stato": "in lavorazione",
       "priorita": null,
-      "decisioni": "D116, D117",
-      "note": "Anticipato esplorativamente nella prima sessione del Blocco B (account creato, struttura iniziale 'Ebdomadario/Prove', primi test caricamento, valutazione plugin). Da affrontare in modo definitivo dopo il sotto-passaggio 4 (politica di citazione): D117 (set plugin Better BibTeX + Zotero OCR + Tesseract italiano + ZotFile + DOI Manager), D116 (script caricamento batch), schema tag, convenzioni redazionali, caricamento concreto delle 50 voci del corpus permanente.",
+      "decisioni": "D116, D117, D135-D137 (candidate)",
+      "note": "Architettura decisa il 13 maggio (candidate D135-D137): client desktop obbligatorio per i plugin (Better BibTeX, Zotero OCR + Tesseract italiano, DOI Manager), sync cloud gratuito per i soli metadati, PDF come linked files via ZotMoov (sostituisce ZotFile, deprecato) verso cartella Google Drive in modalità mirror; iCloud escluso. Doppia collezione: 'Corpus permanente' + 'Dossier' (sotto-collezioni numerate per numero). Nessuno schema tag (D137). Restano tre punti aperti: schema citekey Better BibTeX (urgenza massima, da configurare PRIMA di caricare le 50 voci), politiche d'uso della library per la Fabbrica, convenzione nomi delle sotto-collezioni Dossier.",
       "aggiornato_il": "2026-05-12T08:32:00.000Z"
     },
     {
